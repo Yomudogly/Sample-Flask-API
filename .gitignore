@@ -1,5 +1,5 @@
-.env
 .venv
+.vscode
 database.database
 database.db
 diagram.png
