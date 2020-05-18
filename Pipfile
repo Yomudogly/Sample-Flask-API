@@ -22,6 +22,7 @@ mysqlclient = "*"
 simplejson = "*"
 flask-restx = "*"
 importlib-metadata = "*"
+healthcheck = "*"
 
 [requires]
 python_version = "3.7"

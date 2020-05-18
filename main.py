@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+from healthcheck import HealthCheck
 from sqlalchemy import desc
 from datetime import date
 from flask import Flask, request, jsonify, Blueprint
@@ -10,7 +11,6 @@ from flask_restx import Api, Resource, abort
 from flask_cors import CORS
 from utils import APIException
 from models import db, Sizes_shoes, Product_detail, Product, Brand, Model_cat, Media_storage
-
 # import base64
 # import re
 # from alembic import op
@@ -43,9 +43,28 @@ db.init_app(app)
 CORS(app)
 # api.init_app(app)
 
+
+# wrap the flask app and give a heathcheck url
+health = HealthCheck(app, "/healthcheck")
+
+def health_database_status():
+    is_database_working = True
+    output = 'database is ok'
+
+    try:
+        # to check database we will execute raw query
+        session = db.session()
+        session.execute('SELECT 1')
+    except Exception as e:
+        output = str(e)
+        is_database_working = False
+
+    return is_database_working, output
+
+health.add_check(health_database_status)
+
+    
 # Handle/serialize errors like a JSON object
-
-
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
@@ -660,22 +679,22 @@ class ProductsByModelSlug(Resource):
 
 ########### API BRAND ###########
 
-br = api.namespace('brands', description='Operations related to brand table')
+# br = api.namespace('brands', description='Operations related to brand table')
 
 
-# GET ALL BRANDS
-@br.route('')
-class AllBrands(Resource):
+# # GET ALL BRANDS
+# @br.route('')
+# class AllBrands(Resource):
 
-    @api.doc(responses={404: 'Brands not found', 200: 'Ok'})
-    def get(self):
-        brands = Brand.query.all()
-        brands = list(map(lambda x: x.serialize(), brands))
+#     @api.doc(responses={404: 'Brands not found', 200: 'Ok'})
+#     def get(self):
+#         brands = Brand.query.all()
+#         brands = list(map(lambda x: x.serialize(), brands))
 
-        return jsonify(get_paginated_list(brands, '/brands',
-                                          start=request.args.get('start', 1),
-                                          limit=request.args.get('limit', 20)
-                                          ))
+#         return jsonify(get_paginated_list(brands, '/brands',
+#                                           start=request.args.get('start', 1),
+#                                           limit=request.args.get('limit', 20)
+#                                           ))
 
 
 ########################################################
