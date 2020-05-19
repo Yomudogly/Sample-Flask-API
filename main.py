@@ -47,6 +47,7 @@ CORS(app)
 # wrap the flask app and give a heathcheck url
 health = HealthCheck(app, "/healthcheck")
 
+
 def health_database_status():
     is_database_working = True
     output = 'database is ok'
@@ -61,9 +62,10 @@ def health_database_status():
 
     return is_database_working, output
 
+
 health.add_check(health_database_status)
 
-    
+
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
@@ -294,26 +296,26 @@ class ProductDetailsByReleaseDate(Resource):
 
 
 # ##### PRODUCT DETAILS BY SALES #####
-# @pd.route('/sales/<int:sales>')
-# @api.doc(params={'sales': 'integer'})
-# class ProductDetailsBySales(Resource):
+@pd.route('/sales/<int:sales>')
+@api.doc(params={'sales': 'integer'})
+class ProductDetailsBySales(Resource):
 
-#     @api.doc(responses={404: 'Sales not found', 200: 'Ok'})
-#     def get(self, sales: int):
-#         products = Product_detail.query.filter_by(sales=sales).all()
-#         # products = Product_detail.query.filter(Product_detail.sales<=sales) -- for queries less then or more then !!!
-#         if products:
-#             products = list(map(lambda x: x.serialize(), products))
+    @api.doc(responses={404: 'Sales not found', 200: 'Ok'})
+    def get(self, sales: int):
+        products = Product_detail.query.filter_by(sales=sales).all()
+        # products = Product_detail.query.filter(Product_detail.sales<=sales) -- for queries less then or more then !!!
+        if products:
+            products = list(map(lambda x: x.serialize(), products))
 
-#             return jsonify(get_paginated_list(products,
-#                                               f'/sales/{sales}',
-#                                               start=request.args.get(
-#                                                   'start', 1),
-#                                               limit=request.args.get(
-#                                                   'limit', 20)
-#                                               ))
-#         else:
-#             abort(400)
+            return jsonify(get_paginated_list(products,
+                                              f'/sales/{sales}',
+                                              start=request.args.get(
+                                                  'start', 1),
+                                              limit=request.args.get(
+                                                  'limit', 20)
+                                              ))
+        else:
+            abort(400)
 
 
 ########################################################
@@ -679,22 +681,22 @@ class ProductsByModelSlug(Resource):
 
 ########### API BRAND ###########
 
-# br = api.namespace('brands', description='Operations related to brand table')
+br = api.namespace('brands', description='Operations related to brand table')
 
 
-# # GET ALL BRANDS
-# @br.route('')
-# class AllBrands(Resource):
+# GET ALL BRANDS
+@br.route('')
+class AllBrands(Resource):
 
-#     @api.doc(responses={404: 'Brands not found', 200: 'Ok'})
-#     def get(self):
-#         brands = Brand.query.all()
-#         brands = list(map(lambda x: x.serialize(), brands))
+    @api.doc(responses={404: 'Brands not found', 200: 'Ok'})
+    def get(self):
+        brands = Brand.query.all()
+        brands = list(map(lambda x: x.serialize(), brands))
 
-#         return jsonify(get_paginated_list(brands, '/brands',
-#                                           start=request.args.get('start', 1),
-#                                           limit=request.args.get('limit', 20)
-#                                           ))
+        return jsonify(get_paginated_list(brands, '/brands',
+                                          start=request.args.get('start', 1),
+                                          limit=request.args.get('limit', 20)
+                                          ))
 
 
 ########################################################
