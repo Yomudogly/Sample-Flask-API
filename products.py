@@ -27,7 +27,7 @@ class AllProducts(Resource):
 
 
 # PRODUCTS SORTED BY LOWEST ASK DATE
-@api.route('/sort/lowest-ask-date')
+@api.route('/lowest-ask-date')
 class ProductSortedByLowestAskDate(Resource):
 
     @api.doc(responses={404: 'Can\'t sort products by lowest ask date', 200: 'Ok'})
@@ -49,7 +49,7 @@ class ProductSortedByLowestAskDate(Resource):
 
 
 # PRODUCTS SORTED BY HIGHEST OFFER DATE
-@api.route('/sort/highest-offer-date')
+@api.route('/highest-offer-date')
 class ProductSortedByHighestOfferDate(Resource):
 
     @api.doc(responses={404: 'Can\'t sort products by highest offer date', 200: 'Ok'})
@@ -71,13 +71,36 @@ class ProductSortedByHighestOfferDate(Resource):
 
 
 # PRODUCTS SORTED BY RECENTLY VIEWED
-@api.route('/sort/recently-viewed')
+@api.route('/recently-viewed')
 class ProductSortedByRecentlyViewed(Resource):
 
     @api.doc(responses={404: 'Can\'t sort products by recently viewed date', 200: 'Ok'})
     def get(self):
         products = Product.query.order_by(
             desc(Product.recently_viewed)).all()
+        # products = Product.query.filter(Product.recently_viewed>=date) -- for queries less then or more then !!!
+        if products:
+            products = list(map(lambda x: x.serialize(), products))
+
+            return jsonify(get_paginated_list(products,
+                                              f'/sort/recently-viewed',
+                                              start=request.args.get(
+                                                  'start', 1),
+                                              limit=request.args.get(
+                                                  'limit', 10)
+                                              ))
+        abort(400)
+        
+        
+
+# PRODUCTS SORTED BY POPULARITY (# VISITS)
+@api.route('/visits')
+class ProductSortedByVisits(Resource):
+
+    @api.doc(responses={404: 'Can\'t sort products by visits', 200: 'Ok'})
+    def get(self):
+        products = Product.query.order_by(
+            desc(Product.visit)).all()
         # products = Product.query.filter(Product.recently_viewed>=date) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
