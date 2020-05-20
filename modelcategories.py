@@ -21,10 +21,7 @@ class AllModels(Resource):
         models = Model_cat.query.all()
         models = list(map(lambda x: x.serialize(), models))
 
-        return jsonify(get_paginated_list(models, '/model-category',
-                                          start=request.args.get('start', 1),
-                                          limit=request.args.get('limit', 20)
-                                          ))
+        return jsonify(models)
 
 ########################################################
 ########################################################
