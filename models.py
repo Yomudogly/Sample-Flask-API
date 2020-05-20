@@ -7,7 +7,7 @@ db = SQLAlchemy()
 
 class Sizes_shoes(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    brand_id = db.Column(db.Integer, ForeignKey('brand.id'))
+    brand_id = db.Column(db.Integer, ForeignKey("brand.id"))
     sizes_types_id = db.Column(db.Unicode(10))
     cm = db.Column(db.Float(5, 1))
     us = db.Column(db.Unicode(20))
@@ -16,15 +16,16 @@ class Sizes_shoes(db.Model):
     inch = db.Column(db.Float(5, 1))
     woman = db.Column(db.Float(5, 1), nullable=True)
     position = db.Column(db.Unicode(50), nullable=True)
-    users_id = db.Column(db.Integer)   # ForeignKey('sf_guard_user.id')
+    users_id = db.Column(db.Integer)  # ForeignKey('sf_guard_user.id')
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
     product_details = db.relationship(
-        'Product_detail', backref='sizes_shoes', lazy=True)
+        "Product_detail", backref="sizes_shoes", lazy=True
+    )
 
     def __repr__(self):
-        return (f'Size {self.cm}')
+        return f"Size {self.cm}"
 
     def serialize(self):
         return {
@@ -40,21 +41,21 @@ class Sizes_shoes(db.Model):
             "position": self.position,
             "usersId": self.users_id,
             "createdAt": self.created_at,
-            "updatedAt": self.updated_at
+            "updatedAt": self.updated_at,
         }
 
 
 class Product_detail(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    product_id = db.Column(db.Integer, ForeignKey('product.id'))
-    sizes_shoes_id = db.Column(db.Integer, ForeignKey('sizes_shoes.id'))
+    product_id = db.Column(db.Integer, ForeignKey("product.id"))
+    sizes_shoes_id = db.Column(db.Integer, ForeignKey("sizes_shoes.id"))
     lowest_ask = db.Column(db.Float(18, 2), nullable=True)
     highest_offer = db.Column(db.Float(18, 2), nullable=True)
     last_sale = db.Column(db.Float(18, 2), nullable=True)
     last_sale_date = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
-        return (f'Product detail {self.slug}')
+        return f"Product detail {self.slug}"
 
     def serialize(self):
         return {
@@ -64,15 +65,15 @@ class Product_detail(db.Model):
             "lowestAsk": self.lowest_ask,
             "highestOffer": self.highest_offer,
             "lastSale": self.last_sale,
-            "lastSaleDate": self.last_sale_date
+            "lastSaleDate": self.last_sale_date,
         }
 
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.Unicode(100))
-    brand_id = db.Column(db.Integer, ForeignKey('brand.id'))
-    model_cat_id = db.Column(db.Integer, ForeignKey('model_cat.id'))
+    brand_id = db.Column(db.Integer, ForeignKey("brand.id"))
+    model_cat_id = db.Column(db.Integer, ForeignKey("model_cat.id"))
     brief_description = db.Column(LONGTEXT, nullable=True)
     description = db.Column(LONGTEXT, nullable=True)
     retail_price = db.Column(db.Float(18, 2), nullable=True)
@@ -99,13 +100,11 @@ class Product(db.Model):
     updated_at = db.Column(db.DateTime)
     slug = db.Column(db.Unicode(255), nullable=True)
 
-    product_details = db.relationship(
-        'Product_detail', backref='product', lazy=True)
-    media_storage = db.relationship(
-        'Media_storage', backref='product', lazy=True)
+    product_details = db.relationship("Product_detail", backref="product", lazy=True)
+    media_storage = db.relationship("Media_storage", backref="product", lazy=True)
 
     def __repr__(self):
-        return (f'Product {self.name}')
+        return f"Product {self.name}"
 
     def serialize(self):
         return {
@@ -136,7 +135,7 @@ class Product(db.Model):
             "usersId": self.users_id,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
-            "slug": self.slug
+            "slug": self.slug,
         }
 
 
@@ -150,7 +149,7 @@ class Brand(db.Model):
     shortcut = db.Column(db.Unicode(200), nullable=True)
     image = db.Column(db.Unicode(100), nullable=True)
     favicon = db.Column(db.Unicode(100), nullable=True)
-    users_id = db.Column(db.Integer)      # ForeignKey('sf_guard_user.id')
+    users_id = db.Column(db.Integer)  # ForeignKey('sf_guard_user.id')
     status = db.Column(db.Integer, default=0, nullable=True)
     rep_popular_brand = db.Column(db.Integer, default=0, nullable=True)
     posicion_order = db.Column(db.Integer, default=0, nullable=True)
@@ -158,12 +157,12 @@ class Brand(db.Model):
     updated_at = db.Column(db.DateTime)
     slug = db.Column(db.Unicode(255), nullable=True)
 
-    product = db.relationship('Product', backref='brand', lazy=True)
-    sizes_shoes = db.relationship('Sizes_shoes', backref='brand', lazy=True)
-    model_cat = db.relationship('Model_cat', backref='brand', lazy=True)
+    product = db.relationship("Product", backref="brand", lazy=True)
+    sizes_shoes = db.relationship("Sizes_shoes", backref="brand", lazy=True)
+    model_cat = db.relationship("Model_cat", backref="brand", lazy=True)
 
     def __repr__(self):
-        return (f'Brand {self.name}')
+        return f"Brand {self.name}"
 
     def serialize(self):
         return {
@@ -182,13 +181,13 @@ class Brand(db.Model):
             "positionOrder": self.posicion_order,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
-            "slug": self.slug
+            "slug": self.slug,
         }
 
 
 class Model_cat(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    brand_id = db.Column(db.Integer, ForeignKey('brand.id'))
+    brand_id = db.Column(db.Integer, ForeignKey("brand.id"))
     model_cat_id = db.Column(db.Integer, nullable=True)
     name = db.Column(db.Unicode(100))
     slug_full = db.Column(db.Unicode(250), nullable=True)
@@ -199,7 +198,7 @@ class Model_cat(db.Model):
     shortcut = db.Column(db.Unicode(200), nullable=True)
     image = db.Column(db.Unicode(100), nullable=True)
     favicon = db.Column(db.Unicode(100), nullable=True)
-    users_id = db.Column(db.Integer)      # ForeignKey('sf_guard_user.id')
+    users_id = db.Column(db.Integer)  # ForeignKey('sf_guard_user.id')
     status = db.Column(db.Integer, default=0, nullable=True)
     rep_popular_brand = db.Column(db.Integer, default=0, nullable=True)
     posicion_order = db.Column(db.Integer, default=0, nullable=True)
@@ -207,10 +206,10 @@ class Model_cat(db.Model):
     updated_at = db.Column(db.DateTime)
     slug = db.Column(db.Unicode(255), nullable=True)
 
-    product = db.relationship('Product', backref='model_cat', lazy=True)
+    product = db.relationship("Product", backref="model_cat", lazy=True)
 
     def __repr__(self):
-        return (f'Model category {self.name}')
+        return f"Model category {self.name}"
 
     def serialize(self):
         return {
@@ -232,7 +231,7 @@ class Model_cat(db.Model):
             "positionOrder": self.posicion_order,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
-            "slug": self.slug
+            "slug": self.slug,
         }
 
 
@@ -241,7 +240,7 @@ class Media_storage(db.Model):
     alt = db.Column(db.Unicode(100), nullable=True)
     created_at = db.Column(db.DateTime)
     url = db.Column(db.Unicode(100))
-    product_id = db.Column(db.Integer, ForeignKey('product.id'))
+    product_id = db.Column(db.Integer, ForeignKey("product.id"))
     type = db.Column(db.Unicode(45), default=0, nullable=True)
     # Forein key for verification table
     verification_id = db.Column(db.Integer, default=0, nullable=True)
@@ -249,7 +248,7 @@ class Media_storage(db.Model):
     transaction_id = db.Column(db.Integer, default=0, nullable=True)
 
     def __repr__(self):
-        return (f'Media {self.alt}')
+        return f"Media {self.id}"
 
     def serialize(self):
         return {
@@ -260,5 +259,6 @@ class Media_storage(db.Model):
             "productId": self.product_id,
             "type": self.type,
             "verificationId": self.transaction_id,
-            "transactionId": self.transaction_id
+            "transactionId": self.transaction_id,
         }
+
