@@ -154,13 +154,7 @@ class ProductSortedByReleaseDate(Resource):
 
 
 # FIXME Need to fix this endpoints to use join with Media_storage table !
-# @api.route("/highest-offer-date")
-# class ProductSortedByHighestOfferDate(Resource):
-#     @api.doc(responses={404: "Can't sort products by highest offer date", 200: "Ok"})
-#     def get(self):
-#         products = Product.query.order_by(desc(Product.highest_offer_date)).all()
-#         # products = Product.query.filter(Product.highest_offer_date>=date) -- for queries less then or more then !!!
-#         if products:
+# @api ts:
 #             products = list(map(lambda x: x.serialize(), products))
 
 #             return jsonify(

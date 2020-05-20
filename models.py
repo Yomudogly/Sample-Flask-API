@@ -30,8 +30,8 @@ class Sizes_shoes(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "brandId": self.brand_id,
-            "sizeTypeId": self.sizes_types_id,
+            "brand_id": self.brand_id,
+            "sizes_types_id": self.sizes_types_id,
             "cm": self.cm,
             "us": self.us,
             "uk": self.uk,
@@ -39,9 +39,9 @@ class Sizes_shoes(db.Model):
             "inch": self.inch,
             "woman": self.woman,
             "position": self.position,
-            "usersId": self.users_id,
-            "createdAt": self.created_at,
-            "updatedAt": self.updated_at,
+            "users_id": self.users_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
 
 
@@ -60,12 +60,12 @@ class Product_detail(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "productId": self.product_id,
-            "sizesShoesId": self.sizes_shoes_id,
-            "lowestAsk": self.lowest_ask,
-            "highestOffer": self.highest_offer,
-            "lastSale": self.last_sale,
-            "lastSaleDate": self.last_sale_date,
+            "product_id": self.product_id,
+            "sizes_shoes_id": self.sizes_shoes_id,
+            "lowest_ask": self.lowest_ask,
+            "highest_offer": self.highest_offer,
+            "last_sale": self.last_sale,
+            "last_sale_date": self.last_sale_date,
         }
 
 
@@ -110,12 +110,12 @@ class Product(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "brandId": self.brand_id,
-            "modelCatId": self.model_cat_id,
-            "briefDesc": self.brief_description,
+            "brand_id": self.brand_id,
+            "model_cat_id": self.model_cat_id,
+            "brief_description": self.brief_description,
             "description": self.description,
-            "retailPrice": self.retail_price,
-            "releaseDate": self.release_date,
+            "retail_price": self.retail_price,
+            "release_date": self.release_date,
             "colorway": self.colorway,
             "style": self.style,
             "weight": self.weight,
@@ -123,18 +123,18 @@ class Product(db.Model):
             "width": self.width,
             "height": self.height,
             "visit": self.visit,
-            "isActive": self.is_active,
-            "seoTitle": self.seo_title,
-            "seoDesc": self.seo_description,
-            "seoKeywords": self.seo_keywords,
-            "lowestAsk": self.lowest_ask,
-            "highestOffer": self.highest_offer,
-            "recentlyViewed": self.recently_viewed,
-            "lowestAskDate": self.lowest_ask_date,
-            "highestOfferDate": self.highest_offer_date,
-            "usersId": self.users_id,
-            "createdAt": self.created_at,
-            "updatedAt": self.updated_at,
+            "is_active": self.is_active,
+            "seo_title": self.seo_title,
+            "seo_description": self.seo_description,
+            "seo_keywords": self.seo_keywords,
+            "lowest_ask": self.lowest_ask,
+            "highest_offer": self.highest_offer,
+            "recently_viewed": self.recently_viewed,
+            "lowest_ask_date": self.lowest_ask_date,
+            "highest_offer_date": self.highest_offer_date,
+            "users_id": self.users_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
             "slug": self.slug,
         }
 
@@ -169,18 +169,18 @@ class Brand(db.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
-            "seoTitle": self.seo_title,
-            "seoDesc": self.seo_description,
-            "seoKeywords": self.seo_keywords,
+            "seo_title": self.seo_title,
+            "seo_description": self.seo_description,
+            "seo_keywords": self.seo_keywords,
             "shortcut": self.shortcut,
             "image": self.image,
             "favicon": self.favicon,
-            "usersId": self.users_id,
+            "users_id": self.users_id,
             "status": self.status,
-            "repPopularBrand": self.rep_popular_brand,
-            "positionOrder": self.posicion_order,
-            "createdAt": self.created_at,
-            "updatedAt": self.updated_at,
+            "rep_popular_brand": self.rep_popular_brand,
+            "posicion_order": self.posicion_order,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
             "slug": self.slug,
         }
 
@@ -214,23 +214,23 @@ class Model_cat(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "brandId": self.brand_id,
-            "modelCatId": self.model_cat_id,
+            "brand_id": self.brand_id,
+            "model_cat_id": self.model_cat_id,
             "name": self.name,
-            "slugFull": self.slug_full,
+            "slug_full": self.slug_full,
             "description": self.description,
-            "seoTitle": self.seo_title,
-            "seoDesc": self.seo_description,
-            "seoKeywords": self.seo_keywords,
+            "seo_title": self.seo_title,
+            "seo_description": self.seo_description,
+            "seo_keywords": self.seo_keywords,
             "shortcut": self.shortcut,
             "image": self.image,
             "favicon": self.favicon,
-            "usersId": self.users_id,
+            "users_id": self.users_id,
             "status": self.status,
-            "repPopularBrand": self.rep_popular_brand,
-            "positionOrder": self.posicion_order,
-            "createdAt": self.created_at,
-            "updatedAt": self.updated_at,
+            "rep_popular_brand": self.rep_popular_brand,
+            "posicion_order": self.posicion_order,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
             "slug": self.slug,
         }
 
@@ -254,11 +254,52 @@ class Media_storage(db.Model):
         return {
             "id": self.id,
             "alt": self.alt,
-            "createdAt": self.created_at,
+            "created_at": self.created_at,
             "url": self.url,
-            "productId": self.product_id,
+            "product_id": self.product_id,
             "type": self.type,
-            "verificationId": self.transaction_id,
-            "transactionId": self.transaction_id,
+            "verification_id": self.verification_id,
+            "transaction_id": self.transaction_id,
         }
 
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    category_id = db.Column(db.Integer, nullable=True)
+    name = db.Column(db.Unicode(100), nullable=True)
+    description = db.Column(LONGTEXT, nullable=True)
+    seo_title = db.Column(db.Unicode(60), nullable=True)
+    seo_description = db.Column(db.Unicode(160), nullable=True)
+    seo_keywords = db.Column(LONGTEXT, nullable=True)
+    shortcut = db.Column(db.Unicode(200), nullable=True)
+    image = db.Column(db.Unicode(100), nullable=True)
+    favicon = db.Column(db.Unicode(100), nullable=True)
+    status = db.Column(db.Integer, nullable=True)
+    posicion_order = db.Column(db.Integer, nullable=True)
+    url = db.Column(db.Unicode(100), nullable=True)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
+    slug = db.Column(db.Unicode(255), nullable=True, unique=True)
+
+    def __repr__(self):
+        return f"Category {self.name}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "category_id": self.category_id,
+            "name": self.name,
+            "description": slef.description,
+            "seo_title": slef.seo_title,
+            "seo_description": self.seo_description,
+            "seo_keywords": self.seo_keywords,
+            "shortcut": self.shortcut,
+            "image": self.image,
+            "favicon": self.favicon,
+            "status": self.status,
+            "posicion_order": self.posicion_order,
+            "url": self.url,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "slug": self.slug,
+        }
