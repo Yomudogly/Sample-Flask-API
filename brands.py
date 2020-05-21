@@ -19,7 +19,7 @@ class AllBrands(Resource):
         brands = Brand.query.all()
         brands = list(map(lambda x: x.serialize(), brands))
 
-        return jsonify(get_paginated_list(brands, '/brands',
+        return jsonify(get_paginated_list(brands,
                                           start=request.args.get('start', 1),
                                           limit=request.args.get('limit', 20)
                                           ))

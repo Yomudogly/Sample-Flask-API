@@ -3,7 +3,7 @@ from flask_restx import abort
 ##### PAGINATION #####
 
 
-def get_paginated_list(results, url, start, limit):
+def get_paginated_list(results, start, limit):
     start = int(start)
     limit = int(limit)
     count = len(results)
@@ -11,25 +11,26 @@ def get_paginated_list(results, url, start, limit):
         abort(404)
     # make response
     obj = {}
-    obj['start'] = start
-    obj['limit'] = limit
-    obj['count'] = count
+    obj["start"] = start
+    obj["limit"] = limit
+    obj["count"] = count
     # make URLs
     # make previous url
     if start == 1:
-        obj['previous'] = ''
+        obj["previous"] = ""
     else:
         start_copy = max(1, start - limit)
         limit_copy = start - 1
-        obj['previous'] = url + '?start=%d&limit=%d' % (start_copy, limit_copy)
+        obj["previous"] = "?start=%d&limit=%d" % (start_copy, limit_copy)
     # make next url
     if start + limit > count:
-        obj['next'] = ''
+        obj["next"] = ""
     else:
         start_copy = start + limit
-        obj['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
+        obj["next"] = "?start=%d&limit=%d" % (start_copy, limit)
     # finally extract result according to bounds
-    obj['results'] = results[(start - 1):(start - 1 + limit)]
+    obj["results"] = results[(start - 1) : (start - 1 + limit)]
     return obj
+
 
 ################################################################

@@ -21,7 +21,6 @@ class AllCategories(Resource):
         return jsonify(
             get_paginated_list(
                 categories,
-                "/category",
                 start=request.args.get("start", 1),
                 limit=request.args.get("limit", 20),
             )

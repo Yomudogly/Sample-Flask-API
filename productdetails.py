@@ -6,213 +6,207 @@ from pagination import get_paginated_list
 
 
 ########### API PRODUCT DETAILS ###########
-api = Namespace('product-details',
-                description='Operations related to product details table')
+api = Namespace(
+    "product-details", description="Operations related to product details table"
+)
 
 
 # GET ALL PRODUCT DETAILS
-@api.route('')
+@api.route("")
 class AllProductDetails(Resource):
-
-    @api.doc(responses={404: 'Product details not found', 200: 'Ok'})
+    @api.doc(responses={404: "Product details not found", 200: "Ok"})
     def get(self):
         products = Product_detail.query.all()
         products = list(map(lambda x: x.serialize(), products))
 
-        return jsonify(get_paginated_list(products,
-                                          '',
-                                          start=request.args.get('start', 1),
-                                          limit=request.args.get('limit', 20)
-                                          ))
+        return jsonify(
+            get_paginated_list(
+                products,
+                start=request.args.get("start", 1),
+                limit=request.args.get("limit", 20),
+            )
+        )
 
 
 # PRODUCT DETAILS BY ID
-@api.route('/<int:id>')
-@api.doc(params={'id': 'id'})
+@api.route("/<int:id>")
+@api.doc(params={"id": "id"})
 class ProductDetailsById(Resource):
-
-    @api.doc(responses={404: 'Id not found', 200: 'Ok'})
+    @api.doc(responses={404: "Id not found", 200: "Ok"})
     def get(self, id: int):
 
         products = Product_detail.query.get(id)
         if products:
             return jsonify(products.serialize())
-        abort(404, f'Product detail with id {id} does not exist')
+        abort(404, f"Product detail with id {id} does not exist")
 
 
 # PRODUCT DETAILS BY PRODUCT ID
-@api.route('/product-id/<int:id>')
-@api.doc(params={'id': 'integer'})
+@api.route("/product-id/<int:id>")
+@api.doc(params={"id": "integer"})
 class ProductDetailsByProductId(Resource):
-
-    @api.doc(responses={404: 'Product id not found', 200: 'Ok'})
+    @api.doc(responses={404: "Product id not found", 200: "Ok"})
     def get(self, id: int):
         products = Product_detail.query.filter_by(product_id=id).all()
 
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/product-id/{id}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # PRODUCT DETAILS BY SIZES_SHOES ID
-@api.route('/sizes-id/<int:id>')
-@api.doc(params={'id': 'integer'})
+@api.route("/sizes-id/<int:id>")
+@api.doc(params={"id": "integer"})
 class ProductDetailsBySizesShoes(Resource):
-
-    @api.doc(responses={404: 'Sizes shoes id not found', 200: 'Ok'})
+    @api.doc(responses={404: "Sizes shoes id not found", 200: "Ok"})
     def get(self, id: int):
         products = Product_detail.query.filter_by(sizes_shoes_id=id).all()
 
         if products:
             products = list(map(lambda x: x.serialize(), products))
-            return jsonify(get_paginated_list(products,
-                                              f'/sizes-id/{id}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # PRODUCT DETAILS BY SIZE
-@api.route('/size/<float:size>')
-@api.doc(params={'size': 'float number in format x.x'})
+@api.route("/size/<float:size>")
+@api.doc(params={"size": "float number in format x.x"})
 class ProductDetailsBySize(Resource):
-
-    @api.doc(responses={404: 'Size not found', 200: 'Ok'})
+    @api.doc(responses={404: "Size not found", 200: "Ok"})
     def get(self, size: float):
         products = Product_detail.query.filter_by(sizes_shoes_val=size).all()
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/size/{size}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         else:
             abort(400)
 
 
 # PRODUCT DETAILS BY LOWEST ASK PRICE
-@api.route('/lowest-ask/<float:ask>')
-@api.doc(params={'ask': 'float in format x.xx'})
+@api.route("/lowest-ask/<float:ask>")
+@api.doc(params={"ask": "float in format x.xx"})
 class ProductDetailsByLowestAsk(Resource):
-
-    @api.doc(responses={404: 'Lowest asking price not found', 200: 'Ok'})
+    @api.doc(responses={404: "Lowest asking price not found", 200: "Ok"})
     def get(self, ask: float):
         products = Product_detail.query.filter_by(lowest_ask=ask).all()
         # products = Product_detail.query.filter(Product_detail.lowest_ask<=ask) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/lowest-ask/{ask}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # PRODUCT DETAILS BY HIGHEST OFFER
-@api.route('/high-offer/<float:offer>')
-@api.doc(params={'offer': 'float in format x.xx'})
+@api.route("/high-offer/<float:offer>")
+@api.doc(params={"offer": "float in format x.xx"})
 class ProductDetailsByHighestOffer(Resource):
-
-    @api.doc(responses={404: 'Highest offer not found', 200: 'Ok'})
+    @api.doc(responses={404: "Highest offer not found", 200: "Ok"})
     def get(self, offer: float):
         products = Product_detail.query.filter_by(highest_offer=offer).all()
         # products = Product_detail.query.filter(Product_detail.highest_offer<=offer) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/high-offer/{offer}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # PRODUCT DETAILS BY LAST SALE PRICE
-@api.route('/last-sale/<float:last_sale>')
-@api.doc(params={'last_sale': 'float in format x.xx'})
+@api.route("/last-sale/<float:last_sale>")
+@api.doc(params={"last_sale": "float in format x.xx"})
 class ProductDetailsByLastSale(Resource):
-
-    @api.doc(responses={404: 'Last sale price not found', 200: 'Ok'})
+    @api.doc(responses={404: "Last sale price not found", 200: "Ok"})
     def get(self, last_sale: float):
         products = Product_detail.query.filter_by(last_sale=last_sale).all()
         # products = Product_detail.query.filter(Product_detail.last_sale<=last_sale) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/last-sale/{last_sale}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # PRODUCT DETAILS BY LAST SALE DATE
-@api.route('/last-sale-date/<string:date>')
-@api.doc(params={'date': 'string in a format YYYY-MM-DD'})
+@api.route("/last-sale-date/<string:date>")
+@api.doc(params={"date": "string in a format YYYY-MM-DD"})
 class ProductDetailsByReleaseDate(Resource):
-
-    @api.doc(responses={404: 'Last sale date not found', 200: 'Ok'})
+    @api.doc(responses={404: "Last sale date not found", 200: "Ok"})
     def get(self, date: str):
         products = Product_detail.query.filter(
-            Product_detail.last_sale_date.contains(date))
+            Product_detail.last_sale_date.contains(date)
+        )
         # products = Product_detail.query.filter(Product_detail.last_sale_date<=date) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/last-sale-date/{date}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         abort(400)
 
 
 # ##### PRODUCT DETAILS BY SALES #####
-@api.route('/sales/<int:sales>')
-@api.doc(params={'sales': 'integer'})
+@api.route("/sales/<int:sales>")
+@api.doc(params={"sales": "integer"})
 class ProductDetailsBySales(Resource):
-
-    @api.doc(responses={404: 'Sales not found', 200: 'Ok'})
+    @api.doc(responses={404: "Sales not found", 200: "Ok"})
     def get(self, sales: int):
         products = Product_detail.query.filter_by(sales=sales).all()
         # products = Product_detail.query.filter(Product_detail.sales<=sales) -- for queries less then or more then !!!
         if products:
             products = list(map(lambda x: x.serialize(), products))
 
-            return jsonify(get_paginated_list(products,
-                                              f'/sales/{sales}',
-                                              start=request.args.get(
-                                                  'start', 1),
-                                              limit=request.args.get(
-                                                  'limit', 20)
-                                              ))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
         else:
             abort(400)
 
@@ -220,7 +214,6 @@ class ProductDetailsBySales(Resource):
 ########################################################
 ########################################################
 ########################################################
-
 
 
 ################ NEED TO CHECK ########################
