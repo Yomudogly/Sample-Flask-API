@@ -99,6 +99,7 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
     slug = db.Column(db.Unicode(255), nullable=True)
+    url = db.Column(db.Unicode(100), nullable=True)
 
     product_details = db.relationship("Product_detail", backref="product", lazy=True)
     media_storage = db.relationship("Media_storage", backref="product", lazy=True)
@@ -136,6 +137,7 @@ class Product(db.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "slug": self.slug,
+            "url": self.url,
         }
 
 
