@@ -30,6 +30,34 @@ class AllProducts(Resource):
         abort(404)
 
 
+# PRODUCTS SEARCH BY NAME + BRAND SHORTCUT
+@api.route("/search/<string:search>")
+@api.doc(params={"search": "string"})
+class ProductsSearch(Resource):
+    @api.doc(responses={404: "Products are not found", 200: "Ok"})
+    def get(self, search: str):
+
+        products = Product.query.filter(Product.name.ilike(f"%{search}%")).all()
+
+        shortcut = Brand.query.filter(Brand.shortcut.ilike(f"%{search}%")).all()
+
+        if shortcut:
+            for sh in shortcut:
+                product = Product.query.filter_by(brand_id=sh.id).all()
+                products += product
+
+        if products:
+            products = list(map(lambda x: x.serialize(), products))
+            return jsonify(
+                get_paginated_list(
+                    products,
+                    start=request.args.get("start", 1),
+                    limit=request.args.get("limit", 20),
+                )
+            )
+        abort(404)
+
+
 # PRODUCTS SORTED BY LOWEST ASK DATE
 @api.route("/lowest-ask-date")
 class ProductSortedByLowestAskDate(Resource):
