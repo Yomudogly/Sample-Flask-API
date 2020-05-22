@@ -369,6 +369,97 @@ class ProductsByBrandModelSubModelSlug(Resource):
         abort(404)
 
 
+# PRODUCTS BY BRAND SLUG AND MODEL SLUG AND SUBMODEL SLUG + SORTED
+@api.route(
+    "/<string:brand_slug>/<string:model_slug>/<string:model_slug_1>/sorted:<string:sort>"
+)
+@api.doc(
+    params={
+        "brand_slug": "string",
+        "model_slug": "string",
+        "model_slug_1": "string",
+        "sort": "v || ho || la || rv || rd",
+    }
+)
+class ProductsByBrandModelSubModelSlug(Resource):
+    @api.doc(responses={404: "Slug not found", 200: "Ok"})
+    def get(self, brand_slug: str, model_slug: str, model_slug_1: str, sort: str):
+        brand = Brand.query.filter_by(slug=brand_slug).first()
+
+        model = Model_cat.query.filter(
+            Model_cat.slug_full.ilike(f"%{model_slug}%")
+        ).all()
+        model_1 = Model_cat.query.filter(
+            Model_cat.slug_full.ilike(f"%{model_slug_1}%")
+        ).all()
+        print(len(model))
+        if brand and model_1 and len(model) != 0:
+
+            products = []
+            for m in model_1:
+                product = Product.query.filter_by(
+                    brand_id=brand.id, model_cat_id=m.id
+                ).all()
+                products += product
+
+            if sort == "v":
+                for m in model_1:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.visit))
+                        .all()
+                    )
+                    products += product
+            elif sort == "ho":
+                for m in model_1:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.highest_offer_date))
+                        .all()
+                    )
+                    products += product
+            elif sort == "la":
+                for m in model_1:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.lowest_ask_date))
+                        .all()
+                    )
+                    products += product
+            elif sort == "rv":
+                for m in model_1:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.recently_viewed))
+                        .all()
+                    )
+                    products += product
+            elif sort == "rd":
+                for m in model_1:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .filter(Product.release_date <= date.today())
+                        .order_by(desc(Product.release_date))
+                        .all()
+                    )
+                    products += product
+
+            if products:
+                products = list(map(lambda x: x.serialize(), products))
+
+                return jsonify(
+                    get_paginated_list(
+                        products,
+                        start=request.args.get("start", 1),
+                        limit=request.args.get("limit", 40),
+                    )
+                )
+            abort(404)
+        elif not brand or not model_1:
+            abort(404)
+        abort(404)
+
+
 # PRODUCTS BY BRAND SLUG AND MODEL SLUG AND 2 SUBMODEL SLUGS
 @api.route(
     "/<string:brand_slug>/<string:model_slug>/<string:model_slug_1>/<string:model_slug_2>"
@@ -405,7 +496,105 @@ class ProductsByBrandModel2SubModelSlug(Resource):
                 ).all()
 
             if products:
-                print(len(products))
+                products = list(map(lambda x: x.serialize(), products))
+                return jsonify(
+                    get_paginated_list(
+                        products,
+                        start=request.args.get("start", 1),
+                        limit=request.args.get("limit", 40),
+                    )
+                )
+            abort(404)
+        elif not brand or not model_2:
+            abort(404)
+        abort(404)
+
+
+# PRODUCTS BY BRAND SLUG AND MODEL SLUG AND 2 SUBMODEL SLUGS + SORTED
+@api.route(
+    "/<string:brand_slug>/<string:model_slug>/<string:model_slug_1>/<string:model_slug_2>/sorted:<string:sort>"
+)
+@api.doc(
+    params={
+        "brand_slug": "string",
+        "model_slug": "string",
+        "model_slug_1": "string",
+        "model_slug_2": "string",
+        "sort": "v || ho || la || rv || rd",
+    }
+)
+class ProductsByBrandModel2SubModelSlug(Resource):
+    @api.doc(responses={404: "Slug not found", 200: "Ok"})
+    def get(
+        self,
+        brand_slug: str,
+        model_slug: str,
+        model_slug_1: str,
+        model_slug_2: str,
+        sort: str,
+    ):
+        brand = Brand.query.filter_by(slug=brand_slug).first()
+        model = Model_cat.query.filter(
+            Model_cat.slug_full.ilike(f"%{model_slug}%")
+        ).all()
+        model_1 = Model_cat.query.filter(
+            Model_cat.slug_full.ilike(f"%{model_slug_1}%")
+        ).all()
+        model_2 = Model_cat.query.filter(
+            Model_cat.slug_full.ilike(f"%{model_slug_2}%")
+        ).all()
+
+        if brand and model_2 and len(model) != 0 and len(model_1) != 0:
+            products = []
+            for m in model_2:
+                product = Product.query.filter_by(
+                    brand_id=brand.id, model_cat_id=m.id
+                ).all()
+                products += product
+
+            if sort == "v":
+                for m in model_2:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.visit))
+                        .all()
+                    )
+                    products += product
+            elif sort == "ho":
+                for m in model_2:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.highest_offer_date))
+                        .all()
+                    )
+                    products += product
+            elif sort == "la":
+                for m in model_2:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.lowest_ask_date))
+                        .all()
+                    )
+                    products += product
+            elif sort == "rv":
+                for m in model_2:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .order_by(desc(Product.recently_viewed))
+                        .all()
+                    )
+                    products += product
+            elif sort == "rd":
+                for m in model_2:
+                    product = (
+                        Product.query.filter_by(brand_id=brand.id, model_cat_id=m.id)
+                        .filter(Product.release_date <= date.today())
+                        .order_by(desc(Product.release_date))
+                        .all()
+                    )
+                    products += product
+
+            if products:
                 products = list(map(lambda x: x.serialize(), products))
                 return jsonify(
                     get_paginated_list(
