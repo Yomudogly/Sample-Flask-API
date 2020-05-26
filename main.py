@@ -34,7 +34,7 @@ api = Api(
           
             📎 Comments and tips:
           
-            ✓ For queries by multiple arguments you should pass them separated with + sign""",
+            ✓ For queries by multiple arguments you should pass them as aregular string""",
     default="uncategorized",
     ordered=True,
 )
