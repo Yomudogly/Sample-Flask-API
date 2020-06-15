@@ -1,5 +1,7 @@
-.env
 .venv
+.env
+.DS_Store
+.vscode
 database.database
 database.db
 diagram.png
